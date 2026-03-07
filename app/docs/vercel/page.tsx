@@ -59,30 +59,18 @@ export default function VercelDocs() {
               </div>
             </Step>
 
-            <Step number={4} title="Handle &quot;Verification Needed&quot; (if shown)">
+
+
+            <Step number={4} title="Verify Domain Ownership">
               <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
-                If your domain belonged to another Vercel account, Vercel will show a{" "}
-                <strong className="text-zinc-900 dark:text-zinc-100">Verification Needed</strong> badge and ask you to add a TXT record.
-                You can let us do this automatically — no manual DNS editing needed.
+                If your domain was previously used on a different Vercel account, you may need to verify ownership.
               </p>
               <ol className="text-sm text-zinc-600 dark:text-zinc-400 flex flex-col gap-1.5 list-decimal list-inside">
-                <li>In Vercel, click <strong className="text-zinc-900 dark:text-zinc-100">Learn more</strong> next to the warning — it will show a TXT record with name <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 rounded font-mono text-sm">_vercel</code> and a value like <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 rounded font-mono text-sm">vc-domain-verify=yourname.from-mm.dev,xxxxxxxxxxxxxxxx</code></li>
-                <li>Copy the full <strong className="text-zinc-900 dark:text-zinc-100">Value</strong></li>
-                <li>
-                  Paste it in one of two places:
-                  <ul className="list-disc list-inside ml-4 mt-1 flex flex-col gap-1">
-                    <li><strong className="text-zinc-900 dark:text-zinc-100">During registration</strong> — paste into the <em>Vercel TXT verification value</em> field on the <Link href="/register" className="text-green-600 hover:underline">register page</Link></li>
-                    <li><strong className="text-zinc-900 dark:text-zinc-100">After registration</strong> — go to your <Link href="/dashboard" className="text-green-600 hover:underline">dashboard</Link>, click <strong>Edit</strong> on the subdomain, and paste it into the <em>_vercel TXT verification value</em> field</li>
-                  </ul>
-                </li>
-                <li>We&apos;ll add the TXT record to DNS automatically — then click <strong className="text-zinc-900 dark:text-zinc-100">Refresh</strong> in Vercel to complete verification</li>
+                <li>Vercel will prompt you with a TXT record for <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 rounded font-mono text-sm">_vercel</code>.</li>
+                <li>Copy the provided TXT record value (e.g. <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 rounded font-mono text-sm">vc-domain-...</code>).</li>
+                <li>Add it during registration or by clicking <strong>Edit</strong> on your subdomain in the <Link href="/dashboard" className="text-green-600 hover:underline">dashboard</Link>.</li>
+                <li>Once saved, click <strong>Refresh</strong> in Vercel.</li>
               </ol>
-              <div className="mt-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-sm font-mono">
-                <span className="text-zinc-400">TXT</span>{" "}
-                <span className="text-green-600">_vercel.from-mm.dev</span>{" "}
-                <span className="text-zinc-400">→</span>{" "}
-                <span className="text-zinc-900 dark:text-zinc-100">vc-domain-verify=yourname.from-mm.dev,xxxxxxxxxxxxxxxx</span>
-              </div>
             </Step>
 
             <Step number={5} title="HTTPS is automatic">
@@ -98,9 +86,7 @@ export default function VercelDocs() {
         <section className="mb-10">
           <h2 className="text-lg font-semibold mb-5">Troubleshooting</h2>
           <div className="flex flex-col gap-5">
-            <TroubleshootItem title="&quot;Verification Needed&quot; badge on your domain">
-              This means the domain was previously linked to a different Vercel account. Go to your <strong>dashboard</strong>, click <strong>Edit</strong> on the subdomain, and paste the TXT value shown by Vercel (name: <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 rounded font-mono text-xs">_vercel</code>, value: <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 rounded font-mono text-xs">vc-domain-verify=...</code>) into the <em>_vercel TXT verification value</em> field. Once saved, click <strong>Refresh</strong> in Vercel to complete verification.
-            </TroubleshootItem>
+
             <TroubleshootItem title="Domain stuck on &quot;Pending&quot; in Vercel">
               DNS propagation can take up to 24 hours. You can force a re-check by removing the domain and re-adding it in Vercel Settings → Domains. Make sure the CNAME value you entered on from-mm.dev matches exactly what Vercel shows (e.g. <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 rounded font-mono text-xs">xxxxxxxxxxxxxxxx.vercel-dns-017.com</code>). Verify with: <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 rounded font-mono text-xs">dig CNAME yourname.from-mm.dev</code>.
             </TroubleshootItem>

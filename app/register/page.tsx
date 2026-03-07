@@ -29,7 +29,7 @@ export default function RegisterPage() {
       .then((data) => {
         if (data.available) setSubdomain(githubUsername);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [githubUsername, subdomain]);
 
   const checkAvailability = useCallback(async (value: string) => {
@@ -169,11 +169,10 @@ export default function RegisterPage() {
                   key={t}
                   type="button"
                   onClick={() => setType(t)}
-                  className={`rounded-xl border px-4 py-3 text-sm font-medium transition-colors text-left ${
-                    type === t
-                      ? "border-zinc-900 dark:border-zinc-100 bg-zinc-900 dark:bg-zinc-100 text-zinc-50 dark:text-zinc-900"
-                      : "border-zinc-200 dark:border-zinc-700 hover:border-zinc-400"
-                  }`}
+                  className={`rounded-xl border px-4 py-3 text-sm font-medium transition-colors text-left ${type === t
+                    ? "border-zinc-900 dark:border-zinc-100 bg-zinc-900 dark:bg-zinc-100 text-zinc-50 dark:text-zinc-900"
+                    : "border-zinc-200 dark:border-zinc-700 hover:border-zinc-400"
+                    }`}
                 >
                   {t === "github_pages" ? "🐙 GitHub Pages" : "▲ Vercel"}
                 </button>
@@ -183,8 +182,8 @@ export default function RegisterPage() {
               {type === "github_pages"
                 ? `Points to: ${githubUsername || "your-username"}.github.io`
                 : vercelTarget
-                ? `Points to: ${vercelTarget}`
-                : "Enter your Vercel CNAME value below"}
+                  ? `Points to: ${vercelTarget}`
+                  : "Enter your Vercel CNAME value below"}
             </p>
           </div>
 
@@ -209,6 +208,8 @@ export default function RegisterPage() {
             </div>
           )}
 
+
+
           {/* Vercel TXT verification input */}
           {type === "vercel" && (
             <div>
@@ -224,10 +225,7 @@ export default function RegisterPage() {
                 className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-zinc-400 font-mono"
               />
               <p className="text-xs text-zinc-400 mt-1.5">
-                If Vercel shows &quot;Verification Needed&quot;, copy the{" "}
-                <strong className="text-zinc-600 dark:text-zinc-300">TXT value</strong> shown for{" "}
-                <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">_vercel</code> and paste it here.
-                We&apos;ll add it to DNS automatically.
+                For project verification, copy the <strong className="text-zinc-600 dark:text-zinc-300">TXT value</strong> from Vercel for <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">_vercel</code>.
               </p>
             </div>
           )}
