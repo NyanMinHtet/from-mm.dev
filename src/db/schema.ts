@@ -35,6 +35,8 @@ export const subdomains = pgTable("subdomains", {
   type: subdomainTypeEnum("type").notNull(),
   target: text("target").notNull(),
   cfRecordId: text("cf_record_id"),
+  cfTxtRecordId: text("cf_txt_record_id"),
+  vercelTxtValue: text("vercel_txt_value"),
   status: subdomainStatusEnum("status").default("active").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

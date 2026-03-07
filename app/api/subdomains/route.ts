@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { subdomains, users } from "@/db/schema";
 import { eq, count } from "drizzle-orm";
 import { z } from "zod";
-import { createCnameRecord } from "@/lib/cloudflare";
+import { createCnameRecord, createTxtRecord } from "@/lib/cloudflare";
 import { validateSubdomain, buildTarget, SUBDOMAIN_MAX_PER_USER, BASE_DOMAIN } from "@/lib/subdomain";
 import { randomUUID } from "crypto";
 
@@ -12,6 +12,7 @@ const schema = z.object({
   subdomain: z.string(),
   type: z.enum(["github_pages", "vercel"]),
   vercelTarget: z.string().optional(),
+  vercelTxtValue: z.string().optional(),
 });
 
 export async function GET(req: NextRequest) {
@@ -40,7 +41,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
   }
 
-  const { subdomain, type, vercelTarget } = parsed.data;
+  const { subdomain, type, vercelTarget, vercelTxtValue } = parsed.data;
   const validation = validateSubdomain(subdomain);
   if (!validation.valid) {
     return NextResponse.json({ error: validation.error }, { status: 400 });
@@ -74,6 +75,12 @@ export async function POST(req: NextRequest) {
   const target = buildTarget(type, dbUser[0].githubUsername, vercelTarget);
   const cfRecordId = await createCnameRecord(subdomain, target);
 
+  let cfTxtRecordId: string | null = null;
+  const txtValue = type === "vercel" && vercelTxtValue ? vercelTxtValue.trim() : null;
+  if (txtValue) {
+    cfTxtRecordId = await createTxtRecord("_vercel", txtValue);
+  }
+
   const newId = randomUUID();
   await db.insert(subdomains).values({
     id: newId,
@@ -82,6 +89,8 @@ export async function POST(req: NextRequest) {
     type,
     target,
     cfRecordId,
+    cfTxtRecordId,
+    vercelTxtValue: txtValue,
     status: "active",
   });
 

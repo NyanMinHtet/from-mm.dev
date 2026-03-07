@@ -14,6 +14,7 @@ export default function RegisterPage() {
   const [subdomain, setSubdomain] = useState("");
   const [type, setType] = useState<DeployType>("github_pages");
   const [vercelTarget, setVercelTarget] = useState("");
+  const [vercelTxtValue, setVercelTxtValue] = useState("");
   const [availability, setAvailability] = useState<"idle" | "checking" | "available" | "taken" | "invalid">("idle");
   const [availabilityMsg, setAvailabilityMsg] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -68,7 +69,7 @@ export default function RegisterPage() {
       const res = await fetch("/api/subdomains", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subdomain, type, vercelTarget: type === "vercel" ? vercelTarget : undefined }),
+        body: JSON.stringify({ subdomain, type, vercelTarget: type === "vercel" ? vercelTarget : undefined, vercelTxtValue: type === "vercel" && vercelTxtValue ? vercelTxtValue : undefined }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -204,6 +205,29 @@ export default function RegisterPage() {
               <p className="text-xs text-zinc-400 mt-1.5">
                 Find this in your Vercel project →{" "}
                 <strong className="text-zinc-600 dark:text-zinc-300">Settings → Domains</strong> → add your subdomain → copy the CNAME value shown.
+              </p>
+            </div>
+          )}
+
+          {/* Vercel TXT verification input */}
+          {type === "vercel" && (
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Vercel TXT verification value{" "}
+                <span className="text-zinc-400 font-normal">(optional)</span>
+              </label>
+              <input
+                type="text"
+                value={vercelTxtValue}
+                onChange={(e) => setVercelTxtValue(e.target.value.trim())}
+                placeholder="vc-domain-verify=your-sub.from-mm.dev,xxxxxxxxxxxxxxxx"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-zinc-400 font-mono"
+              />
+              <p className="text-xs text-zinc-400 mt-1.5">
+                If Vercel shows &quot;Verification Needed&quot;, copy the{" "}
+                <strong className="text-zinc-600 dark:text-zinc-300">TXT value</strong> shown for{" "}
+                <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">_vercel</code> and paste it here.
+                We&apos;ll add it to DNS automatically.
               </p>
             </div>
           )}
